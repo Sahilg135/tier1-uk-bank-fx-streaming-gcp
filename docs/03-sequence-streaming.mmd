@@ -1,0 +1,19 @@
+sequenceDiagram
+  participant Producer
+  participant PubSub
+  participant Dataflow
+  participant BQRaw as BQ Raw
+  participant BQMart as BQ Mart
+  participant BI as Dashboards
+
+  Producer->>PubSub: publish event
+  PubSub->>Dataflow: pull message
+  Dataflow->>Dataflow: validate schema + dedup
+  Dataflow->>Dataflow: enrich from ref data
+  alt valid
+    Dataflow->>BQRaw: write (insertId)
+    BQRaw->>BQMart: transform (dbt/SQL)
+    BQMart-->>BI: serve analytics
+  else invalid
+    Dataflow-->>PubSub: DLQ route (reason code)
+  end
