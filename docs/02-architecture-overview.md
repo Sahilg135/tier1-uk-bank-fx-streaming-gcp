@@ -1,5 +1,5 @@
 ```markdown
-# 02-architecture-overview.m
+# 02-architecture-overview.md
 
 ```mermaid
 flowchart LR
