@@ -7,39 +7,43 @@ Patterns only — no client code/data.
 flowchart LR
 
   subgraph Producers
-    A[OMS/EMS] -->|Trades| P1[Pub/Sub: trades]
-    B[Pricing Engine] -->|Quotes| P2[Pub/Sub: quotes]
-    C[Custodian] -->|Confirms| P3[Pub/Sub: confirms]
+    A[OMS/EMS] -->|Trades| TGT
+    B[Pricing Engine] -->|Quotes| QGT
+    C[Custodian] -->|Confirms| CGT
   end
 
   subgraph Boundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
-    DF[Dataflow (Beam)<br/>validate + dedup<br/>watermarks<br/>joins<br/>DLQ]
-    RAW[BigQuery: raw]
-    STG[BigQuery: stage]
-    MART[BigQuery: mart]
+    T[Topic: trades]
+    Q[Topic: quotes]
+    CFM[Topic: confirms]
+
+    DF[Dataflow Beam: validate, dedup, watermarks, joins, DLQ]
+    RAW[BigQuery raw]
+    STG[BigQuery stage]
+    MART[BigQuery mart]
     DQ[DLQ topics]
+
     CMP[Cloud Composer]
-    OBS[Monitoring / Logging]
+    OBS[Monitoring & Logging]
   end
 
-  %% Ingestion to processing
-  P1 --> DF
-  P2 --> DF
-  P3 --> DF
+  A --> T
+  B --> Q
+  C --> CFM
 
-  %% Processing outputs
+  T --> DF
+  Q --> DF
+  CFM --> DF
+
   DF --> RAW
   DF --> DQ
   RAW --> STG --> MART
 
-  %% Orchestration
   CMP --> DF
   CMP --> STG
   CMP --> MART
 
-  %% Observability
-  DF -. metrics/logs .-> OBS
-  MART -. usage/stats .-> OBS
+  DF -.-> OBS
+  MART -.-> OBS
 
-  %% BI
   MART --> BI[Dashboards / Exports]
