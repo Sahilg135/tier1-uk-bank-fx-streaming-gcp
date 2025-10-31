@@ -1,27 +1,70 @@
-```markdown
-# 02-architecture-overview.md
+# 02 – Architecture Overview
+
+Sanitized portfolio case-study of Tier-1 UK bank FX streaming on GCP.  
+Patterns only — no client code/data.
 
 ```mermaid
 flowchart LR
+
+  %% ─────────── External Producers ───────────
   subgraph Producers
-    A[OMS/EMS] -->|Trades| P1[(Pub/Sub: trades)]
-    B[Pricing Engine] -->|Quotes| P2[(Pub/Sub: quotes)]
-    C[Custodian] -->|Confirms| P3[(Pub/Sub: confirms)]
+    A[OMS/EMS] -->|Trades| TGT
+    B[Pricing Engine] -->|Quotes| QGT
+    C[Custodian] -->|Confirms| CGT
   end
 
-  subgraph Boundary["GCP Security Boundary (VPC‑SC, CMEK, SA‑IAM)"]
-    DF[[Dataflow (Beam)\nvalidate+dedup\nwatermarks\nenrich joins\nDLQ]]
-    BQ[(BigQuery\nraw → stage → mart)]
-    CMP[Composer]
-    OBS[Monitoring/Logging]
-    P1 --> DF
-    P2 --> DF
-    P3 --> DF
-    DF --> BQ
-    CMP --> BQ
-    DF --> DQ[(DLQ topics)]
-    BQ --> OBS
+  %% ─────────── GCP Security Boundary ───────────
+  subgraph Boundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
+    %% Ingestion topics (Pub/Sub)
+    T[(Pub/Sub topic: trades)]:::topic
+    Q[(Pub/Sub topic: quotes)]:::topic
+    CFM[(Pub/Sub topic: confirms)]:::topic
+
+    %% Stream processing
+    DF[[Dataflow (Beam)\nvalidate + dedup\nwatermarks\njoins\nDLQ]]:::proc
+    DQ[(DLQ topics)]:::topic
+
+    %% Storage layers (BigQuery)
+    RAW[(BigQuery: raw)]:::bq
+    STG[(BigQuery: stage)]:::bq
+    MART[(BigQuery: mart)]:::bq
+
+    %% Orchestration & Ops
+    CMP[Cloud Composer]:::svc
+    OBS[Monitoring / Logging]:::svc
   end
 
-  BQ --> BI[Dashboards/Exports]
+  %% Edges from producers into boundary
+  A -->|Trades| T
+  B -->|Quotes| Q
+  C -->|Confirms| CFM
 
+  %% Topics to stream processor
+  T --> DF
+  Q --> DF
+  CFM --> DF
+
+  %% Dataflow outputs
+  DF --> RAW
+  DF --> DQ
+
+  %% Layered warehouse flow
+  RAW --> STG --> MART
+
+  %% Orchestration
+  CMP --> DF
+  CMP --> STG
+  CMP --> MART
+
+  %% Observability
+  DF -.metrics/logs.-> OBS
+  MART -.usage/stats.-> OBS
+
+  %% BI/Exports
+  MART --> BI[Dashboards / Exports]
+
+  %% Styles
+  classDef topic fill:#eef,stroke:#36c,stroke-width:1px;
+  classDef proc fill:#efe,stroke:#3a3,stroke-width:1px;
+  classDef bq fill:#ffe,stroke:#c93,stroke-width:1px;
+  classDef svc fill:#f4f4f4,stroke:#777,stroke-width:1px;
