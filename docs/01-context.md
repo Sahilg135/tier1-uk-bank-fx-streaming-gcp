@@ -1,12 +1,32 @@
-# Context & Goals
+# 01 – Context
 
-**Problem:** Risk & Compliance need near–real‑time visibility into FX transactions for limit monitoring and regulatory reporting.
-**Goals:** 
-- Deliver **T+0 analytics** with **p95 E2E < 90s**.
-- Enforce **data contracts**, versioning, and **auditable lineage**.
-- Keep cost predictable with partition/cluster and autoscaling.
+```mermaid
+flowchart LR
+  subgraph External_Systems
+    OMS[OMS/EMS]
+    Pricing[Pricing Engine]
+    Custodian[Custodian]
+  end
 
-**Non‑functional constraints:**
-- Strong governance (**VPC‑SC**, **CMEK**, **SA‑IAM**) and PII handling.
-- Replay capability for regulator requests within hours.
-- Multi‑region ready; graceful backfills.
+  subgraph GCP_Boundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
+    PubSub[Topics: trades, quotes, confirms]
+    Dataflow[Dataflow Beam: validate, dedup, joins, DLQ]
+    BQ_R[BigQuery raw]
+    BQ_S[BigQuery stage]
+    BQ_M[BigQuery mart]
+    Composer[Cloud Composer]
+    Obs[Monitoring & Logging]
+  end
+
+  Consumers[Dashboards / Exports]
+
+  OMS --> PubSub
+  Pricing --> PubSub
+  Custodian --> PubSub
+
+  PubSub --> Dataflow --> BQ_R --> BQ_S --> BQ_M --> Consumers
+  Composer --> Dataflow
+  Composer --> BQ_S
+  Composer --> BQ_M
+  Dataflow -.-> Obs
+  BQ_M -.-> Obs
