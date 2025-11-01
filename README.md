@@ -1,6 +1,12 @@
 # Tier‑1 UK Bank — FX Streaming (GCP) • Sanitized Case Study
 
-Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
+## Docs Index
+- [01 – Context](docs/01-context.md)
+- [02 – Architecture Overview](docs/02-architecture-overview.md)
+- [03 – Sequence (Streaming)](docs/03-sequence-streaming.md)
+- [04 – Security Boundary](docs/04-security-boundary.md)
+
+> Note: Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
 
 > **TL;DR**: Real‑time FX event ingestion, validation, enrichment, and analytics on **GCP** using **Pub/Sub → Dataflow (Apache Beam) → BigQuery**, orchestrated by **Composer**, with **VPC‑SC/CMEK** governance. Targets **p95 < 90s** E2E latency at ~**2–2.5M events/day**. This repo shares **patterns only** — no client code or data.
 
