@@ -5,6 +5,9 @@
 - [02 – Architecture Overview](docs/02-architecture-overview.md)
 - [03 – Sequence (Streaming)](docs/03-sequence-streaming.md)
 - [04 – Security Boundary](docs/04-security-boundary.md)
+- [05 – CI/CD](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml)
+- [06 – License](LICENSE)
+
 
 > Note: Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
 
