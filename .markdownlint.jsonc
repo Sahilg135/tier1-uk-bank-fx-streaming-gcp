@@ -1,0 +1,6 @@
+{
+  "MD013": false, // line length
+  "MD033": false, // inline HTML if used
+  "MD041": false, // first line heading
+  "MD046": { "style": "fenced" } // fenced code blocks (for mermaid)
+}
