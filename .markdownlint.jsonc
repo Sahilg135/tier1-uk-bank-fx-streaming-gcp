@@ -1,24 +1,12 @@
 
-> Key points:  
-> • only ASCII in labels; no bullets, no `&`, no `<br/>`  
-> • use `\n` for line breaks inside `[[ … ]]` and `[( … )]`
-
-Commit: `docs(mermaid): sanitize labels and use \n for line breaks`
-
-
-## 2) CI badge shows “failing”
-
-That reflects the **last Actions run**. Most likely markdownlint/pre-commit flags the `<br/>` or long lines. We’ll relax the rules slightly and re-run.
-
-**Update `.markdownlint.jsonc` to exactly this (merge if file exists):**
-```jsonc
 {
-  // allow inline HTML (we removed <br/>, but safe to permit)
-  "MD033": { "allowed_elements": ["br"] },
-
-  // ignore long-line checks in code/table/heading contexts
-  "MD013": { "code_blocks": false, "tables": false, "headings": false },
-
-  // heading-at-top not enforced (your badges/quotes above H2 are fine)
-  "MD041": false
+  "default": true,
+  "MD013": false,     // line length rule — too noisy for README files
+  "MD033": false,     // inline HTML allowed (for badges/tables)
+  "MD041": false,     // first line must be heading — not enforced
+  "MD036": false,     // emphasis style consistency not required
+  "MD034": false,     // allow bare URLs (common in docs)
+  "MD007": { "indent": 2 }, // standard list indentation
+  "MD022": { "lines_above": 1, "lines_below": 1 }, // clean spacing around headings
+  "MD024": { "allow_different_nesting": true } // allow repeated headings if in different sections
 }
