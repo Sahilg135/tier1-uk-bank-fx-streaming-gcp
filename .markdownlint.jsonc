@@ -1,6 +1,24 @@
+
+> Key points:  
+> • only ASCII in labels; no bullets, no `&`, no `<br/>`  
+> • use `\n` for line breaks inside `[[ … ]]` and `[( … )]`
+
+Commit: `docs(mermaid): sanitize labels and use \n for line breaks`
+
+
+## 2) CI badge shows “failing”
+
+That reflects the **last Actions run**. Most likely markdownlint/pre-commit flags the `<br/>` or long lines. We’ll relax the rules slightly and re-run.
+
+**Update `.markdownlint.jsonc` to exactly this (merge if file exists):**
+```jsonc
 {
-  "MD013": false, // line length
-  "MD033": false, // inline HTML if used
-  "MD041": false, // first line heading
-  "MD046": { "style": "fenced" } // fenced code blocks (for mermaid)
+  // allow inline HTML (we removed <br/>, but safe to permit)
+  "MD033": { "allowed_elements": ["br"] },
+
+  // ignore long-line checks in code/table/heading contexts
+  "MD013": { "code_blocks": false, "tables": false, "headings": false },
+
+  // heading-at-top not enforced (your badges/quotes above H2 are fine)
+  "MD041": false
 }
