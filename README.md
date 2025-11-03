@@ -27,6 +27,14 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 
 [![Sanitized](https://img.shields.io/badge/content-sanitized-green)](#) [![GCP](https://img.shields.io/badge/cloud-GCP-blue)](#)
 
+## 📁 Repository Overview
+
+This repository demonstrates:
+- Real-time data ingestion (**Pub/Sub → Dataflow → BigQuery**)
+- Orchestration with **Cloud Composer**
+- Governance via **VPC-SC & CMEK**
+- Observability & **cost-control documentation**
+
 ---
 
 ## Why this architecture
