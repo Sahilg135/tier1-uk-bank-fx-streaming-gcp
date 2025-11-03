@@ -21,9 +21,8 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 - [05 – Data Models](docs/05-data-models.md)
 - [06 – SLOs & Observability](docs/06-slos-observability.md)
 - [07 – Cost Controls](docs/07-cost-controls.md)
-- **08 – CI/CD** *(coming soon)*
-- **09 – License** *(coming soon)*
-
+- [08 – CI/CD](docs/08-ci-cd.md)
+- [09 – License](docs/09-license.md)
 
 
 > Note: Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
