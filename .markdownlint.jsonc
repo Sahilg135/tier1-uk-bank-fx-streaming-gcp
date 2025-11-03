@@ -1,12 +1,14 @@
-
 {
   "default": true,
-  "MD013": false,     // line length rule — too noisy for README files
-  "MD033": false,     // inline HTML allowed (for badges/tables)
-  "MD041": false,     // first line must be heading — not enforced
-  "MD036": false,     // emphasis style consistency not required
-  "MD034": false,     // allow bare URLs (common in docs)
-  "MD007": { "indent": 2 }, // standard list indentation
-  "MD022": { "lines_above": 1, "lines_below": 1 }, // clean spacing around headings
-  "MD024": { "allow_different_nesting": true } // allow repeated headings if in different sections
+  "MD013": false,     // ignore line length
+  "MD033": false,     // allow inline HTML (badges/tables)
+  "MD041": false,     // first line not necessarily a heading
+  "MD046": false,     // allow fenced code blocks (```)
+  "MD040": false,     // language not required in code fences
+  "MD022": false,     // ignore blank line around headings
+  "MD031": false,     // ignore blank lines around fences
+  "MD036": false,     // emphasis consistency relaxed
+  "MD034": false,     // allow bare URLs
+  "MD007": { "indent": 2 },
+  "MD024": { "allow_different_nesting": true }
 }
