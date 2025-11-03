@@ -55,7 +55,6 @@ Risk & compliance require **T+0 visibility** into FX trades. The platform captur
 ---
 
 ## L2 Architecture Overview
-```mermaid
 flowchart LR
   subgraph Producers
     A[OMS/EMS] -->|Trades| P1[(Pub/Sub: trades)]
@@ -65,7 +64,7 @@ flowchart LR
 
   subgraph GCP_SecBoundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
     DF[[Dataflow (Beam)\nvalidate + dedup\nwatermarks / late data\nenrich joins\nDLQ routing]]
-    BQ[(BigQuery\nraw → stage → mart\n(partition + cluster))]
+    BQ[(BigQuery\nraw -> stage -> mart\n(partition + cluster))]
     CMP[Composer\nDAGs: replay, compaction, exports, QC]
     OBS[Cloud Monitoring / Error Reporting\nSLO p95 < 90s]
 
@@ -79,7 +78,6 @@ flowchart LR
   end
 
   BQ --> BI[Power BI / Looker\nDashboards & Alerts]
-```
 
 ---
 
