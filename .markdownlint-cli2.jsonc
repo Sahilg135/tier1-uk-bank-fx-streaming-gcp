@@ -1,0 +1,8 @@
+{
+  "globs": ["**/*.md", "!node_modules/**", "!.git/**", "!.github/**"],
+  "config": {
+    "MD013": { "code_blocks": false, "tables": false, "headings": false },
+    "MD033": { "allowed_elements": ["br"] },
+    "MD041": false
+  }
+}
