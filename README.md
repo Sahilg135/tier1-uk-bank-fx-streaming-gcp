@@ -1,12 +1,18 @@
 # Tier‑1 UK Bank — FX Streaming (GCP) • Sanitized Case Study
 
+[![CI](https://img.shields.io/badge/CI-Passing-brightgreen)]()
+[![Docs](https://img.shields.io/badge/Docs-Available-blue)]()
+[![License](https://img.shields.io/badge/License-MIT-lightgrey)]()
+
+---
+
 ## Docs Index
 - [01 – Context](docs/01-context.md)
 - [02 – Architecture Overview](docs/02-architecture-overview.md)
 - [03 – Sequence (Streaming)](docs/03-sequence-streaming.md)
 - [04 – Security Boundary](docs/04-security-boundary.md)
-- [05 – CI/CD](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml)
-- [06 – License](LICENSE)
+- [05 – CI/CD](docs/05-ci-cd.md)
+- [06 – License](docs/06-license.md)
 
 
 > Note: Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
