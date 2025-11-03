@@ -1,19 +1,24 @@
 # Tier-1 UK Bank — FX Streaming (GCP) · Sanitized Case Study
 
-[![CI](https://img.shields.io/badge/CI-passing-brightgreen)](../../actions)
+[![CI](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Sahilg135/tier1-uk-bank-fx-streaming-gcp?display_name=tag)](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/releases)
 [![Docs](https://img.shields.io/badge/Docs-available-blue)](./docs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey)](./LICENSE)
 
-
 _A sanitized data-engineering case study demonstrating a real-time FX streaming pipeline on GCP._
 
-
----
+> **Quick Facts**  
+> **Use-case:** real-time FX trades/quotes → enriched → analytics  
+> **Stack:** GCP (Pub/Sub → Dataflow/Beam → BigQuery) + Composer; VPC-SC, CMEK  
+> **Throughput:** ~2–2.5M events/day; E2E **p95 < 90s**  
+> **Patterns-only:** no client code/data; fully sanitized  
+> **Ops:** markdown lint + pre-commit; protected `main`; semver releases  
+> **SLOs:** success ≥99.5%, p95 lat <90s, DLQ <0.5%  
+> **Cost guardrails:** BQ partition/cluster, Dataflow autoscaling, logs-based budgets
 
 ---
 
 ## Docs Index
-
 - [01 – Context](docs/01-context.md)
 - [02 – Architecture Overview](docs/02-architecture-overview.md)
 - [03 – Sequence (Streaming)](docs/03-sequence-streaming.md)
@@ -23,32 +28,29 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 - [07 – Cost Controls](docs/07-cost-controls.md)
 - [08 – CI/CD](docs/08-ci-cd.md)
 - [09 – License](docs/09-license.md)
-
+- [Release Notes](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/releases)
 
 > Note: Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
 
-> **TL;DR**: Real‑time FX event ingestion, validation, enrichment, and analytics on **GCP** using **Pub/Sub → Dataflow (Apache Beam) → BigQuery**, orchestrated by **Composer**, with **VPC‑SC/CMEK** governance. Targets **p95 < 90s** E2E latency at ~**2–2.5M events/day**. This repo shares **patterns only** — no client code or data.
-
-[![Sanitized](https://img.shields.io/badge/content-sanitized-green)](#) [![GCP](https://img.shields.io/badge/cloud-GCP-blue)](#)
-
-## 📁 Repository Overview
-
-This repository demonstrates:
-- Real-time data ingestion (**Pub/Sub → Dataflow → BigQuery**)
-- Orchestration with **Cloud Composer**
-- Governance via **VPC-SC & CMEK**
-- Observability & **cost-control documentation**
+**TL;DR.** Real-time FX event ingestion, validation, enrichment, and analytics on **GCP** using **Pub/Sub → Dataflow (Apache Beam) → BigQuery**, orchestrated by **Composer**, with **VPC-SC/CMEK** governance. Targets **p95 < 90s** E2E latency at ~**2–2.5M events/day**.  
+Security model: see [SECURITY.md](./SECURITY.md).
 
 ---
 
+## 📁 Repository Overview
+- Real-time ingestion (**Pub/Sub → Dataflow → BigQuery**)
+- Orchestration with **Cloud Composer**
+- Governance via **VPC-SC & CMEK**
+- Observability & **cost-control** docs
+
 ## Why this architecture
-Risk & compliance require **T+0 visibility** into FX trades. The platform captures trades/quotes, validates & enriches them, and serves curated BigQuery marts and near‑real‑time dashboards with auditable lineage and low ops overhead.
+Risk & compliance require **T+0 visibility** into FX trades. The platform captures trades/quotes, validates & enriches them, and serves curated BigQuery marts and near-real-time dashboards with auditable lineage and low ops overhead.
 
 ### Key Outcomes
-- **Manual interventions ↓ ~95%** via strong DQ + DLQ flows
-- **Reporting 2× faster**, intra‑day risk views
-- **p95 E2E latency < 90s** at peak **350–500 msg/s**
-- **Infra cost ↓ ~35–40%** with BQ partition/cluster + autoscaling
+- **Manual interventions ↓ ~95%** via strong DQ + DLQ flows  
+- **Reporting 2× faster**, intra-day risk views  
+- **p95 E2E latency < 90s** at peak **350–500 msg/s**  
+- **Infra cost ↓ ~35–40%** using BQ partition/cluster + autoscaling
 
 ---
 
@@ -61,11 +63,11 @@ flowchart LR
     C[Custodian] -->|Confirms| P3[(Pub/Sub: confirms)]
   end
 
-  subgraph GCP_SecBoundary["GCP Security Boundary (VPC‑SC, CMEK, SA‑IAM)"]
-    DF[[Dataflow (Beam)\n• validate+dedup\n• watermarks/late data\n• enrich joins\n• DLQ routing]]
-    BQ[(BigQuery\nraw → stage → mart\n(partition+cluster))]
-    CMP[Composer (DAGs: replay, compaction, exports, QC)]
-    OBS[Cloud Monitoring / Error Reporting\nSLO p95 < 90s]
+  subgraph GCP_SecBoundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
+    DF[[Dataflow (Beam)<br/>validate & dedup<br/>watermarks / late data<br/>enrich joins<br/>DLQ routing]]
+    BQ[(BigQuery<br/>raw → stage → mart<br/>(partition + cluster))]
+    CMP[Composer<br/>DAGs: replay, compaction, exports, QC]
+    OBS[Cloud Monitoring / Error Reporting<br/>SLO p95 < 90s]
 
     P1 --> DF
     P2 --> DF
@@ -76,7 +78,7 @@ flowchart LR
     BQ --> OBS
   end
 
-  BQ --> BI[Power BI / Looker\nDashboards & Alerts]
+  BQ --> BI[Power BI / Looker<br/>Dashboards & Alerts]
 ```
 
 ---
@@ -133,14 +135,14 @@ Partition by `trade_date`; cluster by `desk, symbol`. Materialize common aggrega
 ```
 docs/
   01-context.md
-  02-architecture-overview.mmd
-  03-sequence-streaming.mmd
-  04-security-boundary.mmd
+  02-architecture-overview.md
+  03-sequence-streaming.md
+  04-security-boundary.md
   05-data-models.md
   06-slos-observability.md
   07-cost-controls.md
-  adr/0001-record-architecture-decisions.md
-diagrams/      # export SVG/PNG here if needed
+adr/
+  0001-record-architecture-decisions.md
 ETHICS.md
 SECURITY.md
 LICENSE
@@ -151,5 +153,18 @@ LICENSE
 ---
 
 ## Reuse this pattern
-- Works for **trades, orders, payments, logs, IoT** — any high‑volume event stream with compliance needs.
-- Swap **Pub/Sub/Dataflow** with **Kafka/Spark** if required; principles stay the same (contracts, DQ, governance, SLOs).
+
+---
+
+### Minimal commit plan (copy the messages)
+
+1. `docs(readme): add quick-facts, real CI+Release badges; link SECURITY; remove duplicate hr`  
+2. `docs(readme): fix Repo Map to .md for diagrams; add ADR + Release notes link`  
+3. If any of 05–09 pages don’t exist, either **create stubs** or remove links:  
+   - `docs: add stubs for data models, slos/observability, cost controls, ci/cd, license`
+
+**If you prefer Option A (rename files):**  
+Rename any `docs/*.mmd` → `*.md` and keep the Mermaid code blocks unchanged.
+
+That’s it. Publish `v0.1.1` after these edits and pin the release in LinkedIn Featured.
+::contentReference[oaicite:0]{index=0}
