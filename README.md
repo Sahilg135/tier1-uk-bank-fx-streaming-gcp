@@ -64,10 +64,10 @@ flowchart LR
   end
 
   subgraph GCP_SecBoundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
-    DF[[Dataflow (Beam)<br/>validate & dedup<br/>watermarks / late data<br/>enrich joins<br/>DLQ routing]]
-    BQ[(BigQuery<br/>raw → stage → mart<br/>(partition + cluster))]
-    CMP[Composer<br/>DAGs: replay, compaction, exports, QC]
-    OBS[Cloud Monitoring / Error Reporting<br/>SLO p95 < 90s]
+    DF[[Dataflow (Beam)\nvalidate + dedup\nwatermarks / late data\nenrich joins\nDLQ routing]]
+    BQ[(BigQuery\nraw → stage → mart\n(partition + cluster))]
+    CMP[Composer\nDAGs: replay, compaction, exports, QC]
+    OBS[Cloud Monitoring / Error Reporting\nSLO p95 < 90s]
 
     P1 --> DF
     P2 --> DF
@@ -78,7 +78,8 @@ flowchart LR
     BQ --> OBS
   end
 
-  BQ --> BI[Power BI / Looker<br/>Dashboards & Alerts]
+  BQ --> BI[Power BI / Looker\nDashboards & Alerts]
+
 ```
 
 ---
