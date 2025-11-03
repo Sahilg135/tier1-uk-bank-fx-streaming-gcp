@@ -79,7 +79,6 @@ flowchart LR
   end
 
   BQ --> BI[Power BI / Looker\nDashboards & Alerts]
-
 ```
 
 ---
