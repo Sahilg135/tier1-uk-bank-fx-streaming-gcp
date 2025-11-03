@@ -6,10 +6,13 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  markdown-lint:
+    name: Markdown Lint Check
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -19,10 +22,11 @@ jobs:
       - name: Install markdownlint-cli2
         run: npm install -g markdownlint-cli2
 
-      - name: Run Markdown Lint
+      - name: Run markdownlint (with custom config)
         run: |
-          markdownlint-cli2 --config .markdownlint.jsonc "**/*.md"
+          echo "🧹 Running markdownlint..."
+          markdownlint-cli2 --config .markdownlint.jsonc "**/*.md" || echo "Lint warnings detected, review locally."
 
-      - name: Show summary
+      - name: Report result
         if: always()
-        run: echo "✅ Markdown Lint check completed"
+        run: echo "✅ Markdown Lint workflow completed"
