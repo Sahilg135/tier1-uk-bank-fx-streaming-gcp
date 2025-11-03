@@ -1,8 +1,13 @@
-# Tier‑1 UK Bank — FX Streaming (GCP) • Sanitized Case Study
+# Tier-1 UK Bank — FX Streaming (GCP) · Sanitized Case Study
 
 [![CI](https://img.shields.io/badge/CI-Passing-brightgreen)]()
 [![Docs](https://img.shields.io/badge/Docs-Available-blue)]()
 [![License](https://img.shields.io/badge/License-MIT-lightgrey)]()
+
+_A sanitized data-engineering case study demonstrating a real-time FX streaming pipeline on GCP._
+
+
+---
 
 ---
 
