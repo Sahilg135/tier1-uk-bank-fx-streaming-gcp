@@ -5,6 +5,12 @@
 [![Docs](https://img.shields.io/badge/Docs-available-blue)](./docs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey)](./LICENSE)
 
+<!-- Ops badges (static, no secrets) -->
+![SLO p95 <90s](https://img.shields.io/badge/SLO-p95%20%3C%2090s-blue)
+![DLQ enabled](https://img.shields.io/badge/DLQ-enabled-informational)
+![VPC--SC](https://img.shields.io/badge/Sec-VPC--SC-green)
+![CMEK](https://img.shields.io/badge/Enc-CMEK-green)
+
 _A sanitized data-engineering case study demonstrating a real-time FX streaming pipeline on GCP._
 
 > **Quick Facts**  
@@ -12,9 +18,14 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 > **Stack:** GCP (Pub/Sub → Dataflow/Beam → BigQuery) + Composer; VPC-SC, CMEK  
 > **Throughput:** ~2–2.5M events/day; E2E **p95 < 90s**  
 > **Patterns-only:** no client code/data; fully sanitized  
-> **Ops:** markdown lint + pre-commit; protected `main`; semver releases  
+> **Ops:** markdownlint + pre-commit; protected `main`; semver releases  
 > **SLOs:** success ≥99.5%, p95 lat <90s, DLQ <0.5%  
 > **Cost guardrails:** BQ partition/cluster, Dataflow autoscaling, logs-based budgets
+
+### Operations
+- **Runbook:** [RUNBOOK.md](./RUNBOOK.md)  
+- **Security:** [SECURITY.md](./SECURITY.md)  
+- **Releases:** [Release Notes](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/releases)
 
 ---
 
