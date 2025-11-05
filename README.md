@@ -53,37 +53,37 @@ Risk & compliance require **T+0 visibility** into FX trades. The platform captur
 - **Infra cost ↓ ~35–40%** using BQ partition/cluster + autoscaling
 
 ---
-
 ## L2 Architecture Overview
 
 ```mermaid
 flowchart LR
   subgraph Producers
-    A[OMS/EMS] -->|Trades| P1[(Pub/Sub: trades)]
-    B[Pricing Engine] -->|Quotes| P2[(Pub/Sub: quotes)]
-    C[Custodian] -->|Confirms| P3[(Pub/Sub: confirms)]
+    A["OMS/EMS"] -->|Trades| P1["Pub/Sub: trades"]
+    B["Pricing Engine"] -->|Quotes| P2["Pub/Sub: quotes"]
+    C["Custodian"] -->|Confirms| P3["Pub/Sub: confirms"]
   end
 
   subgraph GCP_SecBoundary["GCP Security Boundary (VPC-SC, CMEK, SA-IAM)"]
-    DF[[Dataflow (Beam)<br/>validate + dedup<br/>watermarks / late data<br/>enrich joins<br/>DLQ routing]]
-    BQ[(BigQuery<br/>raw → stage → mart<br/>(partition + cluster))]
-    CMP[Composer<br/>DAGs: replay, compaction, exports, QC]
-    OBS[Cloud Monitoring / Error Reporting<br/>SLO p95 < 90s]
+    DF["Dataflow (Beam)\nvalidate+dedup\nwatermarks/late\nenrich joins\nDLQ routing"]
+    BQ["BigQuery\nraw -> stage -> mart\n(partition+cluster)"]
+    CMP["Composer\nDAGs: replay, compaction, exports, QC"]
+    OBS["Cloud Monitoring & Error Reporting\nSLO p95 < 90s"]
 
     P1 --> DF
     P2 --> DF
     P3 --> DF
     DF -->|insertId upserts| BQ
     CMP --> BQ
-    DF -->|DLQ| DQ[(DLQ topics)]
+    DF -->|DLQ| DQ["DLQ topics"]
     BQ --> OBS
   end
 
-  BQ --> BI[Power BI / Looker<br/>Dashboards & Alerts]
+  BQ --> BI["Power BI / Looker\nDashboards & Alerts"]
+```
 
 ---
 
-## Event Life‑cycle (Trades)
+## Event Life-cycle (Trades)
 
 ```mermaid
 sequenceDiagram
@@ -106,8 +106,8 @@ sequenceDiagram
     DF-->>PS: route to DLQ with reason
   end
 ```
-
 ---
+
 
 ## Data Model (curated highlights)
 - `fx_trade_fact(trade_id PK, version, side, symbol, qty, px, notional_usd, trader, desk, status, event_ts)`
