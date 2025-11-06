@@ -95,6 +95,16 @@ Security model: see [SECURITY.md](./SECURITY.md).
 - Orchestration with **Cloud Composer**
 - Governance via **VPC-SC & CMEK**
 - Observability & **cost-control** docs
+### SLO & Cost Summary
+
+| Metric | Target | Monitoring / Notes |
+|---------|---------|--------------------|
+| **E2E latency (p95)** | `< 90s` | Dataflow metrics (latency, watermark skew) |
+| **Delivery success** | `≥ 99.5%` | Pub/Sub delivery metrics |
+| **DLQ rate** | `< 0.5% of daily volume` | Dataflow error-handling counters |
+| **Daily cost (est.)** | `~$8–12/day` | BigQuery slot + Dataflow job cost (GCP free-tier optimized) |
+| **Storage footprint** | `~3–5 GB/day` | GCS, lifecycle policies applied |
+
 
 ## Why this architecture
 Risk & compliance require **T+0 visibility** into FX trades. The platform captures trades/quotes, validates & enriches them, and serves curated BigQuery marts and near-real-time dashboards with auditable lineage and low ops overhead.
