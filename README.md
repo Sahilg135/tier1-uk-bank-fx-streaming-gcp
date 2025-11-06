@@ -16,7 +16,7 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 > **Quick Facts**  
 > **Use-case:** real-time FX trades/quotes → enriched → analytics  
 > **Stack:** GCP (Pub/Sub → Dataflow/Beam → BigQuery) + Composer; VPC-SC, CMEK  
-> **Throughput:** ~6–7 M events/day (~250–400 events/sec); E2E p95 < 90 s
+> **Throughput:** ~6–7 M events/day (~250–400 events/sec); E2E p95 < 90 s 
 > **Patterns-only:** no client code/data; fully sanitized  
 > **Ops:** markdownlint + pre-commit; protected `main`; semver releases  
 > **SLOs:** success ≥99.5%, p95 lat <90s, DLQ <0.5%  
