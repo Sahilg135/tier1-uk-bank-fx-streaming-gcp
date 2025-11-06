@@ -22,6 +22,37 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 > **SLOs:** success ≥99.5%, p95 lat <90s, DLQ <0.5%  
 > **Cost guardrails:** BQ partition/cluster, Dataflow autoscaling, logs-based budgets
 
+
+## What is FX Streaming?
+Real-time ingestion of FX trades/quotes/confirms from OMS/EMS into GCP for validation, enrichment, and analytics with **T+0** visibility (risk, P&L, compliance). This repo is a sanitized docs-only case study; no client code or data.
+
+## Business KPIs
+- Trade ingestion success ≥99.5%
+- End-to-end p95 latency < 90s (trades → mart)
+- DLQ rate < 0.5% per day
+- Replay SLA < 30 min for P1 incidents
+- Dashboard freshness ≤ 2 min
+- Cost per 1M events (target guardrail)
+- Data quality failures per 10k events
+- Duplicate rate after dedup < 0.1%
+
+## Failure Handling & Replay Flow
+1. **Detect**: Cloud Monitoring alert + Error Reporting signature; failed events land in **DLQ**.
+2. **Triage**: Classify (schema drift, late/dup, enrichment miss, transient infra).
+3. **Fix**: Patch rule/config; ensure idempotency via **`insertId`** semantics.
+4. **Replay**: **Composer DAG** drains DLQ → re-enqueue → Dataflow reprocess.
+5. **Verify**: QC queries across **raw → stage → mart**; close incident with notes.
+
+## Scaling Strategy (Throughput Guide)
+| Peak msg/s | Daily events | Dataflow autoscale (workers) | BigQuery partition/cluster | Notes |
+|---:|---:|---:|---|---|
+| 100 | 8.6M | 4–8 | `DATE(event_ts)`; cluster `instrument, side` | baseline |
+| 300 | 26M | 12–20 | same | watch shuffle; stream insert quotas |
+| 500 | 43M | 20–30 | same | consider regionalization; template upgrades |
+
+> See **SLOs & Observability**, **Security Boundary**, and **RUNBOOK** pages for deeper details.
+
+
 ### Operations
 - **Runbook:** [RUNBOOK.md](./RUNBOOK.md)  
 - **Security:** [SECURITY.md](./SECURITY.md)  
@@ -39,6 +70,11 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 - [07 – Cost Controls](docs/07-cost-controls.md)
 - [08 – CI/CD](docs/08-ci-cd.md)
 - [09 – License](docs/09-license.md)
+- [What is FX Streaming?](#what-is-fx-streaming)
+- [Business KPIs](#business-kpis)
+- [Failure Handling & Replay Flow](#failure-handling--replay-flow)
+- [Scaling Strategy (Throughput Guide)](#scaling-strategy-throughput-guide)
+- See also: [RUNBOOK](docs/RUNBOOK.md), [SECURITY](./SECURITY.md)
 - [Release Notes](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/releases)
 
 > Note: Sanitized case study from my Cognizant engagement; patterns only—no client code/data.
