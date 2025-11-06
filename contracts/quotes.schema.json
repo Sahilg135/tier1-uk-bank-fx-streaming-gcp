@@ -1,1 +1,28 @@
-quotes.schema.json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quotes.schema.json",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_ts",
+    "source",
+    "quote_id",
+    "instrument",
+    "bid",
+    "ask"
+  ],
+  "properties": {
+    "event_id": { "type": "string" },
+    "event_ts": { "type": "string", "format": "date-time" },
+    "ingest_ts": { "type": "string", "format": "date-time" },
+    "source": { "enum": ["pricing"] },
+    "quote_id": { "type": "string" },
+    "instrument": { "type": "string", "pattern": "^[A-Z]{3}/[A-Z]{3}$" },
+    "bid": { "type": "number", "exclusiveMinimum": 0 },
+    "ask": { "type": "number", "exclusiveMinimum": 0 },
+    "liquidity_provider": { "type": "string" },
+    "trace_id": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "description": "Note: enforce bid < ask in pipeline/business rules; JSON Schema cannot compare two fields without non-standard extensions."
+}
