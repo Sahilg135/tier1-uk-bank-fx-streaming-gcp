@@ -23,6 +23,13 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 > **Cost guardrails:** BQ partition/cluster, Dataflow autoscaling, logs-based budgets
 
 
+
+### L2 Architecture – Real-Time FX Streaming Pipeline on GCP
+*Illustrates end-to-end ingestion, validation, enrichment, and analytics flow across GCP services (Pub/Sub, Dataflow, BigQuery, Composer).*
+![L2 Architecture – Real-Time FX Streaming Pipeline on GCP](assets/overview.png)
+
+
+
 ## What is FX Streaming?
 Real-time ingestion of FX trades/quotes/confirms from OMS/EMS into GCP for validation, enrichment, and analytics with **T+0** visibility (risk, P&L, compliance). This repo is a sanitized docs-only case study; no client code or data.
 
