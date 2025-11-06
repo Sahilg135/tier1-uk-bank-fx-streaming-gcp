@@ -145,19 +145,31 @@ Partition by `trade_date`; cluster by `desk, symbol`. Materialize common aggrega
 
 ## Repo Map
 ```
-docs/
-  01-context.md
-  02-architecture-overview.md
-  03-sequence-streaming.md
-  04-security-boundary.md
-  05-data-models.md
-  06-slos-observability.md
-  07-cost-controls.md
-adr/
-  0001-record-architecture-decisions.md
-ETHICS.md
-SECURITY.md
-LICENSE
+tier1-uk-bank-fx-streaming-gcp/
+├─ README.md
+├─ RUNBOOK.md
+├─ SECURITY.md
+├─ ETHICS.md
+├─ LICENSE
+├─ CODEOWNERS
+├─ CODE_OF_CONDUCT.md
+├─ CONTRIBUTING.md
+├─ .pre-commit-config.yaml
+├─ .markdownlint.jsonc
+├─ .markdownlint-cli2.jsonc
+├─ docs/
+│  ├─ 01-context.md
+│  ├─ 02-architecture-overview.md
+│  ├─ 03-sequence-streaming.md
+│  ├─ 04-security-boundary.md
+│  ├─ 05-data-models.md
+│  ├─ 06-slos-observability.md
+│  └─ 07-cost-controls.md
+├─ data_contracts/        # trades.json, quotes.json, confirms.json (stubs ok)
+├─ qc_examples.sql        # row-count reconciliation example
+├─ adr/
+│  └─ 0001-record-architecture-decisions.md
+└─ 0001-use-pubsub-dataflow-bq.md
 ```
 
 > **Sanitization Note:** Public artifacts are generic; client code/data are intentionally excluded. See `ETHICS.md`.
