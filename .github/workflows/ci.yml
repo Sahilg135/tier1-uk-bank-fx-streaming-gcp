@@ -4,29 +4,62 @@ on:
   push:
     branches: [ main ]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   markdown-lint:
-    name: Markdown Lint Check
+    name: Markdown Lint
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install markdownlint-cli2
-        run: npm install -g markdownlint-cli2
+        run: npm install -g markdownlint-cli2 markdownlint-cli2-formatter-default
 
-      - name: Run markdownlint (with custom config)
+      - name: Run markdownlint (non-blocking)
         run: |
           echo "🧹 Running markdownlint..."
-          markdownlint-cli2 --config .markdownlint.jsonc "**/*.md" || echo "Lint warnings detected, review locally."
+          markdownlint-cli2 --config .markdownlint.jsonc --formatter markdownlint-cli2-formatter-default "**/*.md" \
+          || echo "Markdown lint warnings found (non-blocking). Review locally."
 
-      - name: Report result
+  link-check:
+    name: Link Check (tolerant)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run lychee link checker
+        uses: lycheeverse/lychee-action@v1
+        with:
+          # Be tolerant with externals; keep CI green for recruiters.
+          args: >-
+            --accept 200,206,429
+            --exclude-mail
+            --no-progress
+            --max-redirects 5
+            --request-timeout 20
+            --include-fragments
+            --verbose
+            .
+          fail: false  # don't fail CI on flaky external links
+
+      - name: Upload link-check report
         if: always()
-        run: echo "✅ Markdown Lint workflow completed"
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-check-report
+          path: ./lychee/out.md
