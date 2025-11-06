@@ -66,6 +66,12 @@ Real-time ingestion of FX trades/quotes/confirms from OMS/EMS into GCP for valid
 - [03 – Sequence (Streaming)](docs/03-sequence-streaming.md)
 - [04 – Security Boundary](docs/04-security-boundary.md)
 - [05 – Data Models](docs/05-data-models.md)
+- [05a – Data Contracts](docs/05a-data-contracts.md)
+  – Schemas:
+  [trades](contracts/trades.schema.json) ·
+  [quotes](contracts/quotes.schema.json) ·
+  [confirms](contracts/confirms.schema.json)
+
 - [06 – SLOs & Observability](docs/06-slos-observability.md)
 - [07 – Cost Controls](docs/07-cost-controls.md)
 - [08 – CI/CD](docs/08-ci-cd.md)
@@ -201,7 +207,7 @@ tier1-uk-bank-fx-streaming-gcp/
 │  ├─ 05-data-models.md
 │  ├─ 06-slos-observability.md
 │  └─ 07-cost-controls.md
-├─ data_contracts/
+├─ contracts/
 │  ├─ trades.schema.json
 │  ├─ quotes.schema.json
 │  └─ confirms.schema.json
