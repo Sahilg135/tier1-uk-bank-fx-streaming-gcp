@@ -1,6 +1,6 @@
 # Tier-1 UK Bank — FX Streaming (GCP) · Sanitized Case Study
 
-![CI](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions)
 [![Release](https://img.shields.io/github/v/release/Sahilg135/tier1-uk-bank-fx-streaming-gcp?display_name=tag)](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/releases)
 [![Docs](https://img.shields.io/badge/Docs-available-blue)](./docs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey)](./LICENSE)
