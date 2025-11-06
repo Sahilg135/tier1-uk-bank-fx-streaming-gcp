@@ -1,1 +1,27 @@
-confirms.schema.json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "confirms.schema.json",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_ts",
+    "source",
+    "confirm_id",
+    "trade_id",
+    "status"
+  ],
+  "properties": {
+    "event_id": { "type": "string" },
+    "event_ts": { "type": "string", "format": "date-time" },
+    "ingest_ts": { "type": "string", "format": "date-time" },
+    "source": { "enum": ["custodian"] },
+    "confirm_id": { "type": "string" },
+    "trade_id": { "type": "string" },
+    "status": { "enum": ["PENDING", "SETTLED", "FAILED"] },
+    "settlement_ts": { "type": "string", "format": "date-time" },
+    "reason": { "type": "string" },
+    "trace_id": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "description": "Referential check that trade_id exists in trades is enforced downstream (Dataflow/BigQuery), not in JSON Schema."
+}
