@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trades.schema.json",
+  "type": "object",
+  "required": ["event_id","event_ts","source","trade_id","instrument","side","price","quantity","account_id"],
+  "properties": {
+    "event_id": {"type":"string"},
+    "event_ts": {"type":"string","format":"date-time"},
+    "ingest_ts": {"type":"string","format":"date-time"},
+    "source": {"enum":["oms","pricing","custodian"]},
+    "trade_id": {"type":"string"},
+    "instrument": {"type":"string"},
+    "side": {"enum":["BUY","SELL"]},
+    "price": {"type":"number","exclusiveMinimum": 0},
+    "quantity": {"type":"number","exclusiveMinimum": 0},
+    "account_id": {"type":"string"},
+    "trace_id": {"type":"string"}
+  },
+  "additionalProperties": false
+}
