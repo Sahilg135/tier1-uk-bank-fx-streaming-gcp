@@ -201,7 +201,10 @@ tier1-uk-bank-fx-streaming-gcp/
 │  ├─ 05-data-models.md
 │  ├─ 06-slos-observability.md
 │  └─ 07-cost-controls.md
-├─ data_contracts/        # trades.json, quotes.json, confirms.json (stubs ok)
+├─ data_contracts/
+│  ├─ trades.schema.json
+│  ├─ quotes.schema.json
+│  └─ confirms.schema.json
 ├─ qc_examples.sql        # row-count reconciliation example
 ├─ adr/
 │  └─ 0001-record-architecture-decisions.md
