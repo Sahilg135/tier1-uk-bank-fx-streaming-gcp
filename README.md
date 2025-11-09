@@ -1,4 +1,4 @@
-# Tier-1 UK Bank — FX Streaming (GCP) · Sanitized Case Study
+# Tier-1 UK Bank — BARX-style FX Streaming (GCP) · Sanitized Case Study
 
 [![CI](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/actions)
 [![Release](https://img.shields.io/github/v/release/Sahilg135/tier1-uk-bank-fx-streaming-gcp?display_name=tag)](https://github.com/Sahilg135/tier1-uk-bank-fx-streaming-gcp/releases)
@@ -13,8 +13,13 @@
 
 _A sanitized data-engineering case study demonstrating a real-time FX streaming pipeline on GCP._
 
+> **What is “BARX-style”?** A reference to a well-known FX trading platform at a Tier-1 UK bank.  
+> This repo **simulates** those event-stream patterns (quotes, trades, fills/confirmations).  
+> **No client code or data.**
+
 > **Quick Facts**  
-> **Use-case:** real-time FX trades/quotes → enriched → analytics  
+> **Use-case:** real-time **BARX-style** FX quotes/trades/confirmations → enrichment → analytics
+> **Events:** quotes, trades, fills/confirmations; exactly-once via insertId; late data via watermarks  
 > **Stack:** GCP (Pub/Sub → Dataflow/Beam → BigQuery) + Composer; VPC-SC, CMEK  
 > **Throughput:** ~6–7 M events/day (~250–400 events/sec); E2E p95 < 90 s  
 > **Patterns-only:** no client code/data; fully sanitized
@@ -24,7 +29,7 @@ _A sanitized data-engineering case study demonstrating a real-time FX streaming 
 
 
 
-### L2 Architecture – Real-Time FX Streaming Pipeline on GCP
+## L2 Architecture – BARX-style Real-Time FX Streaming on GCP
 *Illustrates end-to-end ingestion, validation, enrichment, and analytics flow across GCP services (Pub/Sub, Dataflow, BigQuery, Composer).*
 ![L2 Architecture – Real-Time FX Streaming Pipeline on GCP](assets/overview.png)
 
