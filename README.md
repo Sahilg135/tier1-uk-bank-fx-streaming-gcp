@@ -245,17 +245,44 @@ tier1-uk-bank-fx-streaming-gcp/
 
 ## Reuse this pattern
 
----
+### Minimal commit plan (copy these messages)
 
-### Minimal commit plan (copy the messages)
+1. **docs(readme):** add Quick Facts, real CI + Release badges, link SECURITY.md; remove extra horizontal rule under Quick Facts  
+2. **docs(readme):** fix links to diagrams (use `.md` pages with ```mermaid blocks); add links to ADR and Release Notes  
+3. **docs:** create required stubs (or remove dead links):
+   - `docs/05-data-models.md`
+   - `docs/06-observability-and-slos.md`
+   - `docs/07-cost-controls.md`
+   - `docs/08-ci-cd.md`
+   - `docs/09-license-notes.md`
 
-1. `docs(readme): add quick-facts, real CI+Release badges; link SECURITY; remove duplicate hr`  
-2. `docs(readme): fix Repo Map to .md for diagrams; add ADR + Release notes link`  
-3. If any of 05–09 pages don’t exist, either **create stubs** or remove links:  
-   - `docs: add stubs for data models, slos/observability, cost controls, ci/cd, license`
+> **Option A (rename files):** replace any `docs/*.mmd` with Markdown pages, keeping Mermaid code blocks unchanged.
 
-**If you prefer Option A (rename files):**  
-Rename any `docs/*.mmd` → `*.md` and keep the Mermaid code blocks unchanged.
+### Commands
 
-That’s it. Publish `v0.1.1` after these edits and pin the release in LinkedIn Featured.
-::contentReference[oaicite:0]{index=0}
+```bash
+# Normalize diagram pages to .md and preserve history
+git ls-files 'docs/*.mmd' | while read f; do git mv "$f" "${f%.mmd}.md"; done
+git grep -n '\.mmd' -- docs | cut -d: -f1 | sort -u | while read f; do sed -i 's/\.mmd/\.md/g' "$f"; done
+
+# Remove stray placeholder if present
+sed -i '/contentReference\[oaicite:0\]{index=0}/d' README.md
+```
+
+### FAQ
+
+**Is this affiliated with any bank or with Barclays/“BARX”?**  
+No. This is a sanitized case-study for learning and portfolio demonstration. No client code/data, no access to any bank systems.
+
+**What does “BARX-style” mean, and why not write the bank name?**  
+“BARX-style” describes the pattern we simulate—real-time FX quotes/trades → Pub/Sub → Dataflow → BigQuery—common in Tier-1 banks. We keep the repo client-agnostic and avoid real client names in public GitHub.
+
+**Is any production or proprietary dataset used here?**  
+No. All data is synthetic and generated locally; artifacts are generic.
+
+**Can this be used in production as-is?**  
+This is an educational example. Review/harden per your org’s standards and the license in `LICENSE`.
+
+**Where is the sanitization policy?**  
+See the Sanitization Note above and `ETHICS.md`.
+
