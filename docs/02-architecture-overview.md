@@ -47,5 +47,4 @@ flowchart LR
   MART -.-> OBS
 
   MART --> BI[Dashboards / Exports]
-
 ```
